@@ -3,13 +3,13 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-#[cfg(feature = "mcp_tool")]
+#[cfg(feature = "mcp-tool")]
 use schemars::JsonSchema;
 
 use crate::{API_VERSION, FirecrawlApp, FirecrawlError, document::Document};
 
 #[derive(Deserialize, Serialize, Clone, Copy, Debug, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 pub enum ScrapeFormats {
     /// Will result in a copy of the Markdown content of the page.
     #[serde(rename = "markdown")]
@@ -48,7 +48,7 @@ pub enum ScrapeFormats {
 
 #[serde_with::skip_serializing_none]
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct ExtractOptions {
     /// Schema for structured data extraction
@@ -63,7 +63,7 @@ pub struct ExtractOptions {
 
 #[serde_with::skip_serializing_none]
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct JsonOptions {
     /// Schema the output should adhere to, provided in JSON Schema format.
@@ -77,7 +77,7 @@ pub struct JsonOptions {
 }
 
 #[derive(Deserialize, Serialize, Clone, Debug, Default, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub enum ActionType {
     #[default]
@@ -111,7 +111,7 @@ pub enum ActionType {
 
 #[serde_with::skip_serializing_none]
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct Action {
     /// Type of action to perform
@@ -142,7 +142,7 @@ pub struct Action {
 
 #[serde_with::skip_serializing_none]
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct LocationOptions {
     /// Country code for location emulation
@@ -154,11 +154,11 @@ pub struct LocationOptions {
 
 #[serde_with::skip_serializing_none]
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct ScrapeOptions {
     /// Content formats to extract (default: ['markdown'])
-    #[cfg_attr(feature = "mcp_tool", schemars(skip))]
+    #[cfg_attr(feature = "mcp-tool", schemars(skip))]
     pub formats: Option<Vec<ScrapeFormats>>,
 
     /// Extract only the main content, filtering out navigation, footers, etc. (default: `true`)
@@ -184,11 +184,11 @@ pub struct ScrapeOptions {
     pub json_options: Option<JsonOptions>,
 
     /// Location settings for scraping
-    #[cfg_attr(feature = "self_host", schemars(skip))]
+    #[cfg_attr(feature = "self-host", schemars(skip))]
     pub location: Option<LocationOptions>,
 
     /// List of actions to perform before scraping
-    #[cfg_attr(feature = "self_host", schemars(skip))]
+    #[cfg_attr(feature = "self-host", schemars(skip))]
     pub actions: Option<Vec<Action>>,
 
     /// Use mobile viewport. (default: `false`)
@@ -201,11 +201,11 @@ pub struct ScrapeOptions {
     pub remove_base64_images: Option<bool>,
 
     /// Block ads during page loading (default: `true`)
-    #[cfg_attr(feature = "mcp_tool", schemars(skip))]
+    #[cfg_attr(feature = "mcp-tool", schemars(skip))]
     pub block_ads: Option<bool>,
 
     /// Proxy configuration to use (values: "none", "basic", "residential") (default: `"none"`)
-    #[cfg_attr(feature = "mcp_tool", schemars(skip))]
+    #[cfg_attr(feature = "mcp-tool", schemars(skip))]
     pub proxy: Option<String>,
 }
 
@@ -231,7 +231,7 @@ struct ScrapeResponse {
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct ScrapeUrlInput {
     /// The URL to scrape
@@ -272,7 +272,7 @@ impl FirecrawlApp {
     }
 }
 
-#[cfg(all(test, feature = "mcp_tool"))]
+#[cfg(all(test, feature = "mcp-tool"))]
 mod schema_tests {
     use super::*;
     use async_claude;

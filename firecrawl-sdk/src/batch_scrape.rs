@@ -3,14 +3,14 @@ use std::collections::HashMap;
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-#[cfg(feature = "mcp_tool")]
+#[cfg(feature = "mcp-tool")]
 use schemars::JsonSchema;
 
 use crate::{API_VERSION, FirecrawlApp, FirecrawlError, document::Document, scrape::ScrapeOptions};
 
 #[serde_with::skip_serializing_none]
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct Webhook {
     /// Webhook URL to notify when scraping is complete
@@ -75,7 +75,7 @@ struct BatchScrapeResponse {
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct BatchScrapeUrlsInput {
     /// List of URLs to scrape

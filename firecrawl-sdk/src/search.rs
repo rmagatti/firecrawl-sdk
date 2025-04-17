@@ -1,14 +1,14 @@
 use serde::{Deserialize, Serialize};
 
-#[cfg(feature = "mcp_tool")]
+#[cfg(feature = "mcp-tool")]
 use schemars::JsonSchema;
 
 use crate::{
-    error::FirecrawlAPIError, scrape::ScrapeOptions, FirecrawlApp, FirecrawlError, API_VERSION,
+    API_VERSION, FirecrawlApp, FirecrawlError, error::FirecrawlAPIError, scrape::ScrapeOptions,
 };
 
 #[derive(Deserialize, Serialize, Debug, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 pub struct SearchResult {
     /// The URL of the search result
     pub url: String,
@@ -20,7 +20,7 @@ pub struct SearchResult {
 
 #[serde_with::skip_serializing_none]
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct SearchOptions {
     /// Maximum number of results to return (default: 5)
@@ -45,12 +45,12 @@ pub struct SearchOptions {
     pub scrape_options: Option<ScrapeOptions>,
 
     /// This field is not in the schema, so we skip it for schema generation
-    #[cfg_attr(feature = "mcp_tool", schemars(skip))]
+    #[cfg_attr(feature = "mcp-tool", schemars(skip))]
     pub max_results: Option<usize>,
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct LocationOptions {
     /// Country code for geolocation
@@ -78,7 +78,7 @@ struct SearchResponse {
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, PartialEq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct SearchInput {
     pub query: String,

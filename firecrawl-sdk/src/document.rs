@@ -1,12 +1,12 @@
 use serde::{Deserialize, Serialize};
 use serde_json::Value;
 
-#[cfg(feature = "mcp_tool")]
+#[cfg(feature = "mcp-tool")]
 use schemars::JsonSchema;
 
 #[serde_with::skip_serializing_none]
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct DocumentMetadata {
     // Required fields from the API
@@ -19,15 +19,15 @@ pub struct DocumentMetadata {
     #[serde(default)]
     #[serde(deserialize_with = "deserialize_string_or_vec")]
     pub title: Option<String>,
-    
+
     #[serde(default)]
     #[serde(deserialize_with = "deserialize_string_or_vec")]
     pub description: Option<String>,
-    
+
     #[serde(default)]
     #[serde(deserialize_with = "deserialize_string_or_vec")]
     pub language: Option<String>,
-    
+
     // All other metadata fields are captured here
     #[serde(flatten)]
     pub additional_fields: std::collections::HashMap<String, Value>,

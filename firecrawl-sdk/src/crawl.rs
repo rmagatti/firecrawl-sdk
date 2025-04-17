@@ -1,6 +1,6 @@
 use serde::{Deserialize, Serialize};
 
-#[cfg(feature = "mcp_tool")]
+#[cfg(feature = "mcp-tool")]
 use schemars::JsonSchema;
 
 use crate::{
@@ -11,7 +11,7 @@ use crate::{
 };
 
 #[derive(Deserialize, Serialize, Clone, Copy, Debug)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 pub enum CrawlScrapeFormats {
     /// Will result in a copy of the Markdown content of the page.
     #[serde(rename = "markdown")]
@@ -57,7 +57,7 @@ impl From<CrawlScrapeFormats> for ScrapeFormats {
 
 #[serde_with::skip_serializing_none]
 #[derive(Deserialize, Serialize, Debug, Default, Clone)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct CrawlOptions {
     /// Options for scraping each page
@@ -117,7 +117,7 @@ pub struct CrawlResponse {
 }
 
 #[derive(Deserialize, Serialize, Debug, PartialEq, Eq, Clone, Copy)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub enum CrawlStatusTypes {
     /// The crawl job is in progress.
@@ -161,7 +161,7 @@ pub struct CrawlStatus {
 }
 
 #[derive(Deserialize, Serialize, Debug, Clone)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct CrawlAsyncResponse {
     success: bool,
@@ -174,7 +174,7 @@ pub struct CrawlAsyncResponse {
 }
 
 #[derive(Deserialize, Serialize, Debug, Default)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct CrawlUrlInput {
     /// Starting URL for the crawl
@@ -358,7 +358,7 @@ impl FirecrawlApp {
     }
 }
 
-#[cfg(all(test, feature = "mcp_tool"))]
+#[cfg(all(test, feature = "mcp-tool"))]
 mod schema_tests {
     use super::*;
     use async_claude;

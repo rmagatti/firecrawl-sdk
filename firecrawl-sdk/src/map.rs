@@ -1,13 +1,13 @@
 use serde::{Deserialize, Serialize};
 
-#[cfg(feature = "mcp_tool")]
+#[cfg(feature = "mcp-tool")]
 use schemars::JsonSchema;
 
-use crate::{error::FirecrawlAPIError, FirecrawlApp, FirecrawlError, API_VERSION};
+use crate::{API_VERSION, FirecrawlApp, FirecrawlError, error::FirecrawlAPIError};
 
 #[serde_with::skip_serializing_none]
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct MapOptions {
     /// Optional search term to filter URLs
@@ -26,7 +26,7 @@ pub struct MapOptions {
     pub limit: Option<u32>,
 
     /// Timeout in milliseconds. There is no timeout by default.
-    #[cfg_attr(feature = "mcp_tool", schemars(skip))]
+    #[cfg_attr(feature = "mcp-tool", schemars(skip))]
     pub timeout: Option<u32>,
 }
 
@@ -48,7 +48,7 @@ struct MapResponse {
 }
 
 #[derive(Deserialize, Serialize, Debug, Default, Clone, PartialEq, Eq)]
-#[cfg_attr(feature = "mcp_tool", derive(JsonSchema))]
+#[cfg_attr(feature = "mcp-tool", derive(JsonSchema))]
 #[serde(rename_all = "camelCase")]
 pub struct MapUrlInput {
     pub url: String,

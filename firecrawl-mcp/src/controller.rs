@@ -21,7 +21,7 @@ pub use search::{SEARCH_TOOL_NAME, get_firecrawl_search};
 
 use firecrawl_sdk::FirecrawlApp;
 use rmcp::{
-    Error as McpError, RoleServer, ServerHandler,
+    ErrorData as McpError, RoleServer, ServerHandler,
     model::{
         CallToolRequestParam, CallToolResult, Content, Implementation, ListToolsResult,
         PaginatedRequestParam, ProtocolVersion, ServerCapabilities, ServerInfo, Tool,
@@ -47,12 +47,12 @@ impl IntoFirecrawlMCP for FirecrawlApp {
 pub static TOOLS: LazyLock<Arc<[Tool]>> = LazyLock::new(|| {
     // Create a Vec and then convert it to Arc<[Tool]>
     Arc::from(vec![
-        #[cfg(feature = "batch_scrape")]
+        #[cfg(feature = "batch-scrape")]
         {
             let batch_scrape_tool = get_firecrawl_batch_scrape().unwrap();
             Tool {
                 name: batch_scrape_tool.name.clone(),
-                description: batch_scrape_tool.description.clone().unwrap_or_default(),
+                description: batch_scrape_tool.description.clone(),
                 input_schema: Arc::new(
                     batch_scrape_tool
                         .input_schema
@@ -60,6 +60,7 @@ pub static TOOLS: LazyLock<Arc<[Tool]>> = LazyLock::new(|| {
                         .expect("Tool schema must be an object")
                         .clone(),
                 ),
+                annotations: None,
             }
         },
         #[cfg(feature = "crawl")]
@@ -67,7 +68,7 @@ pub static TOOLS: LazyLock<Arc<[Tool]>> = LazyLock::new(|| {
             let crawl_tool = get_firecrawl_crawl().unwrap();
             Tool {
                 name: crawl_tool.name.clone(),
-                description: crawl_tool.description.clone().unwrap_or_default(),
+                description: crawl_tool.description.clone(),
                 input_schema: Arc::new(
                     crawl_tool
                         .input_schema
@@ -75,6 +76,7 @@ pub static TOOLS: LazyLock<Arc<[Tool]>> = LazyLock::new(|| {
                         .expect("Tool schema must be an object")
                         .clone(),
                 ),
+                annotations: None,
             }
         },
         #[cfg(feature = "map")]
@@ -82,7 +84,7 @@ pub static TOOLS: LazyLock<Arc<[Tool]>> = LazyLock::new(|| {
             let map_tool = get_firecrawl_map().unwrap();
             Tool {
                 name: map_tool.name.clone(),
-                description: map_tool.description.clone().unwrap_or_default(),
+                description: map_tool.description.clone(),
                 input_schema: Arc::new(
                     map_tool
                         .input_schema
@@ -90,6 +92,7 @@ pub static TOOLS: LazyLock<Arc<[Tool]>> = LazyLock::new(|| {
                         .expect("Tool schema must be an object")
                         .clone(),
                 ),
+                annotations: None,
             }
         },
         #[cfg(feature = "scrape")]
@@ -97,7 +100,7 @@ pub static TOOLS: LazyLock<Arc<[Tool]>> = LazyLock::new(|| {
             let scrape_tool = get_firecrawl_scrape().unwrap();
             Tool {
                 name: scrape_tool.name.clone(),
-                description: scrape_tool.description.clone().unwrap_or_default(),
+                description: scrape_tool.description.clone(),
                 input_schema: Arc::new(
                     scrape_tool
                         .input_schema
@@ -105,6 +108,7 @@ pub static TOOLS: LazyLock<Arc<[Tool]>> = LazyLock::new(|| {
                         .expect("Tool schema must be an object")
                         .clone(),
                 ),
+                annotations: None,
             }
         },
         #[cfg(feature = "search")]
@@ -112,7 +116,7 @@ pub static TOOLS: LazyLock<Arc<[Tool]>> = LazyLock::new(|| {
             let search_tool = get_firecrawl_search().unwrap();
             Tool {
                 name: search_tool.name.clone(),
-                description: search_tool.description.clone().unwrap_or_default(),
+                description: search_tool.description.clone(),
                 input_schema: Arc::new(
                     search_tool
                         .input_schema
@@ -120,6 +124,7 @@ pub static TOOLS: LazyLock<Arc<[Tool]>> = LazyLock::new(|| {
                         .expect("Tool schema must be an object")
                         .clone(),
                 ),
+                annotations: None,
             }
         },
     ])
@@ -174,7 +179,7 @@ impl ServerHandler for FirecrawlMCP {
         let params = request.arguments.unwrap();
 
         match tool_name.as_ref() {
-            #[cfg(feature = "batch_scrape")]
+            #[cfg(feature = "batch-scrape")]
             BATCH_SCRAPE_TOOL_NAME => match self.batch_scrape(params).await {
                 Ok(result) => Ok(CallToolResult::success(vec![Content::text(result)])),
                 Err(err) => {
@@ -220,7 +225,7 @@ impl ServerHandler for FirecrawlMCP {
 
     async fn list_tools(
         &self,
-        _request: PaginatedRequestParam,
+        _request: Option<PaginatedRequestParam>,
         _context: RequestContext<RoleServer>,
     ) -> Result<ListToolsResult, McpError> {
         // Just clone the Arc pointer, not the actual tools
