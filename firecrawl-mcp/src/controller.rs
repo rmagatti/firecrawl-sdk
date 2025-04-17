@@ -1,6 +1,6 @@
-#[cfg(feature = "batch_scrape")]
+#[cfg(feature = "batch-scrape")]
 pub mod batch_scrape;
-#[cfg(feature = "batch_scrape")]
+#[cfg(feature = "batch-scrape")]
 pub use batch_scrape::{BATCH_SCRAPE_TOOL_NAME, get_firecrawl_batch_scrape};
 #[cfg(feature = "crawl")]
 pub mod crawl;
